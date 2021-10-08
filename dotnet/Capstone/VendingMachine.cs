@@ -39,9 +39,10 @@ namespace Capstone
 
         //Method
         //This will returning the remaining balance to the user whenever the user exits the purchase menu.
+        //Returns value in change such as dimes and nickels
         public Dictionary<string, int> GetChange()
         {
-            //TODO: return dictionary with key string and value decimal that contains user's change
+            
 
             Dictionary<string, int> changeDictionary = new Dictionary<string, int>()
             {
@@ -104,17 +105,14 @@ namespace Capstone
             AddLog(ItemInventory[ID]);
             CurrentBalance -= ItemInventory[ID].ProductPrice;
             ItemInventory[ID].ProductStock--;
-            Console.WriteLine($"\n That {ItemInventory[ID].Name} just ran you {ItemInventory[ID].ProductPrice} and now you have {CurrentBalance} current balance remaining");
+            Console.WriteLine($"\nThat {ItemInventory[ID].Name} just ran you {ItemInventory[ID].ProductPrice} and now you have {CurrentBalance} current balance remaining");
             Console.WriteLine(ItemInventory[ID].MakeSound());
             return $"Successfully purchased {ItemInventory[ID].Name}";
-
-
-            //bounce back to menu
-            //take log of what happened here
+            
         }
 
         //Method
-        //Taking a log of of both of what the user gives us in money and what we give back in change
+        //Taking a log of both of what the user gives us in money and what we give back in change
         public void AddLog(string activity, decimal usersMoney)
         {
             string currentPath = Directory.GetCurrentDirectory();
@@ -135,7 +133,8 @@ namespace Capstone
         }
 
         //Method
-        //creating a log based off of prudct purchase. will take currnet balance and subtract the items value.
+        //This is a overloaded verison on the method up above.
+        //creating a log based off of product purchase. will take currnet balance and subtract the items value.
         public void AddLog(ProductItem productName)
         {
             string currentPath = Directory.GetCurrentDirectory();
@@ -156,6 +155,8 @@ namespace Capstone
         }
 
         //Method
+        //Reads off the CSV file and delimits it and creates a string array to store it's info
+        //we use the array index to set eachs product Id, Name, Price and what snack Type it is.
         public void StockInventory()
 
         {
@@ -187,7 +188,10 @@ namespace Capstone
 
 
         }
+
         //Method
+        //Used to call on whenever we want to display our products.
+        //When product stock count reaches 0, it displays it's name and indicates it is sold out.
         public void DisplayInventory()
         {
             foreach (KeyValuePair<string, ProductItem> item in ItemInventory)

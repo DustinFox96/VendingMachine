@@ -10,6 +10,7 @@ namespace Capstone
         public VendingMachine CurrentVendingMachine { get; }
         public Menu ParentMenu { get; }
 
+        //Method
         public void DisplayMainMenu()
         {
             // Loop through the menu, writing each option to the console next to its numbered 'place' in the menu
@@ -33,11 +34,12 @@ namespace Capstone
                 Console.WriteLine("Press the any key to proceed back to the Display Menu");
                 Console.ReadKey();
             }
-           
+
             Console.Clear();
             NavigateMainMenu(userSelection);
         }
 
+        //Method
         public void DisplayPurchaseMenu()
         {
             // Loop through the menu, writing each option to the console next to its numbered 'place' in the menu
@@ -69,6 +71,7 @@ namespace Capstone
             NavigatePurchaseMenu(userSelection);
         }
 
+        //Method
         public void NavigateMainMenu(int userSelection)
         {
             if (userSelection == 1)
@@ -108,19 +111,22 @@ namespace Capstone
 
         }
 
+        //Method
         public void NavigatePurchaseMenu(int userSelection)
-        {   //Feed Money
+        {
+            //Feed Money
             if (userSelection == 1)
             {
                 Console.WriteLine("Please insert dollar bill yo");
                 decimal enteredMoney = decimal.Parse(Console.ReadLine());
                 CurrentVendingMachine.FeedMoney(enteredMoney);
                 Console.WriteLine("Press the any key to proceed back to the purchase menu");
-                
+
                 Console.Clear();
                 this.DisplayPurchaseMenu();
 
             }
+
             // Select Product
             else if (userSelection == 2)
             {
@@ -138,6 +144,7 @@ namespace Capstone
                 this.DisplayPurchaseMenu();
 
             }
+
             // Finish Transaction
             else if (userSelection == 3)
             {
@@ -149,9 +156,6 @@ namespace Capstone
                         Console.Write($" Cha-ching, you get {key.Value} {key.Key}");
                     }
                 }
-
-                //Console.WriteLine("Cha-ching! Your change is:");
-                //Console.WriteLine(CurrentVendingMachine.GetChange());
                 Console.ReadKey();
                 Console.Clear();
                 ParentMenu.DisplayMainMenu();

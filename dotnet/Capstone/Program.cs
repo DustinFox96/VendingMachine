@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Capstone.Menus;
+using System;
 using System.Collections.Generic;
 
 namespace Capstone
@@ -10,23 +11,20 @@ namespace Capstone
             VendingMachine tester1 = new VendingMachine();
             tester1.StockInventory();
 
-            List<string> mainMenu = new List<string>()
-            {
-                "Display Vending Machine Items",
-                "Purchase",
-                "Exit"
-            };
 
-            Menu menu = new Menu(mainMenu, tester1, null);
-            menu.DisplayMainMenu();
 
-            
+            NewMenu mainMenu = new MainMenu("Main Menu", tester1);
 
-   
-            //tester1.FeedMoney(10);
-            //tester1.PurchaseItem("A1");
-            
-            //tester1.GetChange();
+            NewMenu purchaseMenu = new PurchaseMenu("Purchase Mene", tester1);
+
+            mainMenu.ChildMenus.Add(purchaseMenu);
+            purchaseMenu.ParentMenu = mainMenu;
+
+            mainMenu.Display();
+
+            //Menu menu = new Menu(mainMenu, tester1, null);
+            //menu.DisplayMainMenu();
         }
+        //DANGER ZONE
     }
 }
