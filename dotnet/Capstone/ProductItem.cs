@@ -16,27 +16,15 @@ namespace Capstone
         //The sound that should be displayed to the console depending what the product type is
         public virtual string MakeSound()
         {
+            if (ProductType == "Chip") return "Crunch Crunch, Yummy!";
+            if (ProductType == "Candy") return "Munch Munch, Yummy!";
+            if (ProductType == "Drink") return "Glug Glug, Yummy!";
+            if (ProductType == "Gum") return "Chew Chew, Yummy!";
 
-            if (ProductType == "Chip")
-            {
-                return "Crunch Crunch, Yummy!";
-            }
-            else if (ProductType == "Candy")
-            {
-                return "Munch Munch, Yummy!";
-            }
-            else if (ProductType == "Drink")
-            {
-                return "Glug Glug, Yummy!";
-            }
-            else
-            {
-                return "Chew Chew, Yummy!";
-            }
-
+            //If the product type isn't one of the above, the message is generic:
+            return "Yummy!";
         }
-
-
+            
         //CTOR
         public ProductItem(string name, decimal productPrice, string productType)
         {
