@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Capstone
 {
@@ -8,10 +9,24 @@ namespace Capstone
         {
             VendingMachine tester1 = new VendingMachine();
             tester1.StockInventory();
-            tester1.FeedMoney(10);
-            tester1.PurchaseItem("A1");
+
+            List<string> mainMenu = new List<string>()
+            {
+                "Display Vending Machine Items",
+                "Purchase",
+                "Exit"
+            };
+
+            Menu menu = new Menu(mainMenu, tester1);
+            menu.DisplayMainMenu();
+
             
-            tester1.GetChange();
+
+   
+            //tester1.FeedMoney(10);
+            //tester1.PurchaseItem("A1");
+            
+            //tester1.GetChange();
         }
     }
 }

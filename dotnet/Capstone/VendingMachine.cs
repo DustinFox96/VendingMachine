@@ -39,6 +39,7 @@ namespace Capstone
         //This will returning the remaining balance to the user whenever the user exits the purchase menu.
         public decimal GetChange()
         {
+            //TODO: return dictionary with key string and value decimal that contains user's change
             decimal change = CurrentBalance;
             CurrentBalance = 0;
             AddLog("GIVE CHANGE", change);
@@ -75,7 +76,7 @@ namespace Capstone
             ItemInventory[ID].ProductStock--;
 
             Console.WriteLine(ItemInventory[ID].MakeSound());
-            return "Purchase successful!";
+            return $"Successfully purchased {ItemInventory[ID].Name}";
 
 
             //bounce back to menu

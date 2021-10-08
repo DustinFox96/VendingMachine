@@ -66,5 +66,22 @@ namespace CapstoneTests
             //assert
             Assert.AreEqual(expected, actual);
         }
+
+        [TestMethod]
+        [DataRow("A1", "Successfully purchased Potato Crisps")]
+
+        public void CorrectTransactionTest(string itemToPurchase, string actual)
+        {
+            //arrange
+            VendingMachine vendingMachine = new VendingMachine();
+
+            //act
+            vendingMachine.StockInventory();
+            vendingMachine.FeedMoney(10);
+            string expected = vendingMachine.PurchaseItem(itemToPurchase);
+
+            //assert
+            Assert.AreEqual(expected, actual);
+        }
     }
 }
