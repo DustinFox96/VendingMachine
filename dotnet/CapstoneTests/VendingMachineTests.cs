@@ -1,6 +1,8 @@
 ﻿using Capstone;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace CapstoneTests
 {
@@ -26,20 +28,26 @@ namespace CapstoneTests
 
         //TODO: is there a better way to use decimals in the datarows? instead of casting them inside the body of the test
         [TestMethod]
-        [DataRow(5, "A1", 1.95)]
-        public void GetChangeTest(double feed, string purchaseItem, double expected)
+        [DataRow(5, "C4")]
+        public void GetChangeTest(double feed, string purchaseItem)
         {
             //arrange
             VendingMachine vendingMachine = new VendingMachine();
+            Dictionary<string, int> fakeDictionary = new Dictionary<string, int>()
+            {
+                {"Quarters", 14 }, {"Dimes", 0 }, {"Nickels", 0 }, {"Pennies", 0 }
+            };
+
+            Dictionary<string, int> expected = fakeDictionary;
 
             //act
             vendingMachine.StockInventory();
             vendingMachine.FeedMoney((decimal)feed);
             vendingMachine.PurchaseItem(purchaseItem);
-            decimal actual = vendingMachine.GetChange();
+            Dictionary<string, int> actual = vendingMachine.GetChange();
 
             //assert
-            Assert.AreEqual((decimal)expected, actual);
+           CollectionAssert.AreEqual(expected, actual);
         }
 
         [TestMethod]

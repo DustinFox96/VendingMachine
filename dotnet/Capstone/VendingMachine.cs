@@ -10,7 +10,7 @@ namespace Capstone
     {
         public Dictionary<string, ProductItem> ItemInventory { get; private set; } = new Dictionary<string, ProductItem>();
         public decimal CurrentBalance { get; private set; }
-        
+
 
         //Method
         public void FeedMoney(decimal moneyPutIn)
@@ -20,6 +20,7 @@ namespace Capstone
             if (moneyPutIn < 0)
             {
                 Console.WriteLine("Nice try pal");
+                // Console.ReadKey();
                 return;
             }
             // We only accept valid tender
@@ -31,19 +32,46 @@ namespace Capstone
             else
             {
                 Console.Write("Go take your Monopoly money elsewhere! (We only accept 1s, 2s, 5s, and 10 bills)");
+                //Console.ReadKey();
                 return;
             }
         }
 
         //Method
         //This will returning the remaining balance to the user whenever the user exits the purchase menu.
-        public decimal GetChange()
+        public Dictionary<string, int> GetChange()
         {
             //TODO: return dictionary with key string and value decimal that contains user's change
+
+            Dictionary<string, int> changeDictionary = new Dictionary<string, int>()
+            {
+                {"Quarters", 0 }, {"Dimes", 0 }, {"Nickels", 0 }, {"Pennies", 0 }
+            };
+
+            while (CurrentBalance >= .25m)
+            {
+                CurrentBalance -= .25m;
+                changeDictionary["Quarters"]++;
+            }
+            while (CurrentBalance >= .10m)
+            {
+                CurrentBalance -= .10m;
+                changeDictionary["Dimes"]++;
+            }
+            while (CurrentBalance >= .05m)
+            {
+                CurrentBalance -= .05m;
+                changeDictionary["Nickels"]++;
+            }
+            while (CurrentBalance >= .01m)
+            {
+                CurrentBalance -= .01m;
+                changeDictionary["Penny"]++;
+            }
             decimal change = CurrentBalance;
             CurrentBalance = 0;
             AddLog("GIVE CHANGE", change);
-            return change;
+            return changeDictionary;
         }
 
         //Method
@@ -67,14 +95,16 @@ namespace Capstone
             if (ItemInventory[ID].ProductPrice > CurrentBalance)
             {
                 string message = "Poor people don't eat";
-                Console.Write(message);
+                Console.WriteLine(message);
+                Console.WriteLine();
+                Console.WriteLine("Press the any key to return to the purchase menu");
                 return message;
             }
 
             AddLog(ItemInventory[ID]);
             CurrentBalance -= ItemInventory[ID].ProductPrice;
             ItemInventory[ID].ProductStock--;
-
+            Console.WriteLine($"\n That {ItemInventory[ID].Name} just ran you {ItemInventory[ID].ProductPrice} and now you have {CurrentBalance} current balance remaining");
             Console.WriteLine(ItemInventory[ID].MakeSound());
             return $"Successfully purchased {ItemInventory[ID].Name}";
 
@@ -149,13 +179,30 @@ namespace Capstone
                     }
                 }
             }
+
             catch (Exception theseHands)
             {
                 Console.WriteLine(theseHands.Message);
             }
 
+
+        }
+        //Method
+        public void DisplayInventory()
+        {
+            foreach (KeyValuePair<string, ProductItem> item in ItemInventory)
+            {
+                if (item.Value.ProductStock < 1)
+                {
+                    Console.WriteLine($"{item.Key}: {item.Value.Name}: SOLD OUT");
+                }
+                else
+                {
+                    Console.WriteLine($"{item.Key}: {item.Value.Name}: {item.Value.ProductPrice}");
+                }
+            }
         }
 
-        //DANGER ZONE
     }
+    //DANGER ZONE
 }

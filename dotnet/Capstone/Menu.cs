@@ -8,6 +8,7 @@ namespace Capstone
     {
         public List<string> MenuOptions { get; }
         public VendingMachine CurrentVendingMachine { get; }
+        public Menu ParentMenu { get; }
 
         public void DisplayMainMenu()
         {
@@ -18,21 +19,53 @@ namespace Capstone
             }
             Console.WriteLine();
             Console.WriteLine("Please select an option (1-3)");
-            int userSelection = int.Parse(Console.ReadLine());
+            int userSelection = 0;
+            try
+            {
+                userSelection = int.Parse(Console.ReadLine());
+
+            }
+            catch (Exception)
+            {
+
+                Console.WriteLine($"Not a option, please read better");
+                Console.WriteLine();
+                Console.WriteLine("Press the any key to proceed back to the Display Menu");
+                Console.ReadKey();
+            }
+           
+            Console.Clear();
             NavigateMainMenu(userSelection);
         }
 
         public void DisplayPurchaseMenu()
         {
             // Loop through the menu, writing each option to the console next to its numbered 'place' in the menu
+
+            //CurrentVendingMachine.DisplayInventory();
+
+            Console.WriteLine();
+            Console.WriteLine($"Current balance: ${CurrentVendingMachine.CurrentBalance}");
             for (int i = 0; i < MenuOptions.Count; i++)
             {
                 Console.WriteLine($"({i + 1}) {MenuOptions[i]}");
             }
-            Console.WriteLine();
-            Console.WriteLine($"Current balance: ${CurrentVendingMachine.CurrentBalance}");
             Console.WriteLine("Please select an option (1-3)");
-            int userSelection = int.Parse(Console.ReadLine());
+            int userSelection = 0;
+            try
+            {
+                userSelection = int.Parse(Console.ReadLine());
+
+            }
+            catch (Exception)
+            {
+
+                Console.WriteLine($"Not a option, please read better");
+                Console.WriteLine();
+                Console.WriteLine("Press the any key to proceed back to the Purchase Menu");
+                Console.ReadKey();
+            }
+            Console.Clear();
             NavigatePurchaseMenu(userSelection);
         }
 
@@ -40,11 +73,7 @@ namespace Capstone
         {
             if (userSelection == 1)
             {
-                foreach(KeyValuePair<string, ProductItem> item in CurrentVendingMachine.ItemInventory)
-                {
-                    Console.WriteLine($"{item.Key} - {item.Value.Name} - {item.Value.ProductPrice}");
-                    
-                }
+                CurrentVendingMachine.DisplayInventory();
                 Console.WriteLine();
                 DisplayMainMenu();
 
@@ -58,7 +87,7 @@ namespace Capstone
                 "Finish Transaction"
             };
 
-                Menu menu = new Menu(purchaseMenu, CurrentVendingMachine);
+                Menu menu = new Menu(purchaseMenu, CurrentVendingMachine, this);
                 Console.WriteLine();
                 menu.DisplayPurchaseMenu();
 
@@ -71,6 +100,10 @@ namespace Capstone
             {
                 Environment.Exit(0);
             }
+            else
+            {
+                DisplayMainMenu();
+            }
 
 
         }
@@ -82,11 +115,14 @@ namespace Capstone
                 Console.WriteLine("Please insert dollar bill yo");
                 decimal enteredMoney = decimal.Parse(Console.ReadLine());
                 CurrentVendingMachine.FeedMoney(enteredMoney);
+                Console.WriteLine("Press the any key to proceed back to the purchase menu");
+                
+                Console.Clear();
                 this.DisplayPurchaseMenu();
 
             }
             // Select Product
-            if (userSelection == 2)
+            else if (userSelection == 2)
             {
                 foreach (KeyValuePair<string, ProductItem> item in CurrentVendingMachine.ItemInventory)
                 {
@@ -97,36 +133,44 @@ namespace Capstone
                 Console.WriteLine("Please select snack ID (like A1):");
                 string selectedProduct = Console.ReadLine();
                 CurrentVendingMachine.PurchaseItem(selectedProduct);
+                Console.ReadKey();
+                Console.Clear();
                 this.DisplayPurchaseMenu();
 
             }
             // Finish Transaction
-            if (userSelection == 3)
+            else if (userSelection == 3)
             {
-                Console.WriteLine("Cha-ching! Your change is:");
-                Console.WriteLine(CurrentVendingMachine.GetChange());
-                DisplayMainMenu();
+                Dictionary<string, int> changeDictionary = CurrentVendingMachine.GetChange();
+                foreach (KeyValuePair<string, int> key in changeDictionary)
+                {
+                    if (key.Value > 0)
+                    {
+                        Console.Write($" Cha-ching, you get {key.Value} {key.Key}");
+                    }
+                }
+
+                //Console.WriteLine("Cha-ching! Your change is:");
+                //Console.WriteLine(CurrentVendingMachine.GetChange());
+                Console.ReadKey();
+                Console.Clear();
+                ParentMenu.DisplayMainMenu();
+            }
+            else
+            {
+                ParentMenu.DisplayPurchaseMenu();
             }
 
         }
 
+        //CTOR
+        public Menu(List<String> menuOptions, VendingMachine currentVendingMachine, Menu parentMenu)
+        {
+            MenuOptions = menuOptions;
+            CurrentVendingMachine = currentVendingMachine;
+            ParentMenu = parentMenu;
 
-            public Menu(List<String> menuOptions, VendingMachine currentVendingMachine)
-            {
-                MenuOptions = menuOptions;
-                CurrentVendingMachine = currentVendingMachine;
-
-            }
-        
-
-
-
-
-
-
-
-        // string "1. Purchase Item" - List<>?
-        // options OR another menu
+        }
     }
     //Danger Zone
 }

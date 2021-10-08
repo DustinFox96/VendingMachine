@@ -17,7 +17,7 @@ namespace Capstone
                 "Exit"
             };
 
-            Menu menu = new Menu(mainMenu, tester1);
+            Menu menu = new Menu(mainMenu, tester1, null);
             menu.DisplayMainMenu();
 
             
