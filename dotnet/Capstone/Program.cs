@@ -8,8 +8,8 @@ namespace Capstone
         {
             VendingMachine tester1 = new VendingMachine();
             tester1.StockInventory();
-            tester1.FeedMoney(-1.00m);
-            tester1.PurchaseItem("D4");
+            tester1.FeedMoney(10);
+            tester1.PurchaseItem("A1");
             
             tester1.GetChange();
         }

@@ -8,24 +8,35 @@ namespace Capstone
 {
     public class VendingMachine
     {
-        public Dictionary<string, ProductItem> ItemInventory { get; set; } = new Dictionary<string, ProductItem>();
-        public decimal CurrentBalance { get; set; }
+        public Dictionary<string, ProductItem> ItemInventory { get; private set; } = new Dictionary<string, ProductItem>();
+        public decimal CurrentBalance { get; private set; }
         
 
         //Method
         public void FeedMoney(decimal moneyPutIn)
         {
+            // If the user has somehow entered less than one cent,
+            // chastise them for attempting to pull a fast one on us.
             if (moneyPutIn < 0)
             {
                 Console.WriteLine("Nice try pal");
                 return;
             }
-            CurrentBalance += moneyPutIn;
-            AddLog("Feed Money", moneyPutIn);
+            // We only accept valid tender
+            if (moneyPutIn == 1.00m || moneyPutIn == 2.00m || moneyPutIn == 5.00m || moneyPutIn == 10.00m)
+            {
+                CurrentBalance += moneyPutIn;
+                AddLog("Feed Money", moneyPutIn);
+            }
+            else
+            {
+                Console.Write("Go take your Monopoly money elsewhere! (We only accept 1s, 2s, 5s, and 10 bills)");
+                return;
+            }
         }
 
         //Method
-        //This will returning the remaining balance to the user whenever the user exits the pruchase menu.
+        //This will returning the remaining balance to the user whenever the user exits the purchase menu.
         public decimal GetChange()
         {
             decimal change = CurrentBalance;
@@ -36,31 +47,37 @@ namespace Capstone
 
         //Method
         //Checks to make sure item exist, is in stock, and if current balance meets price. if so, proceed with the transaction.
-        public void PurchaseItem(string ID)
+        public string PurchaseItem(string ID)
         {
             if (!ItemInventory.ContainsKey(ID))
             {
-                Console.WriteLine("Try picking something we have, open up your eyes");
-                return;
+                string message = "Try picking something we have, open up your eyes";
+                Console.Write(message);
+                return message;
             }
 
             if (ItemInventory[ID].ProductStock < 1)
             {
-                Console.WriteLine("OUT OF STOCK");
-                return;
+                string message = "Out of Stock";
+                Console.Write(message);
+                return message;
             }
 
             if (ItemInventory[ID].ProductPrice > CurrentBalance)
             {
-                Console.WriteLine("Poor people don't eat");
-                return;
+                string message = "Poor people don't eat";
+                Console.Write(message);
+                return message;
             }
 
             AddLog(ItemInventory[ID]);
             CurrentBalance -= ItemInventory[ID].ProductPrice;
             ItemInventory[ID].ProductStock--;
+
             Console.WriteLine(ItemInventory[ID].MakeSound());
-            ItemInventory[ID].MakeSound();
+            return "Purchase successful!";
+
+
             //bounce back to menu
             //take log of what happened here
         }
@@ -119,9 +136,7 @@ namespace Capstone
                     while (!sr.EndOfStream)
                     {
                         currentLine = sr.ReadLine();
-                        string[] currentProductItemInfo = new string[4];
-                        currentProductItemInfo = currentLine.Split("|");
-
+                        string[] currentProductItemInfo = currentLine.Split("|");
 
                         string currentId = currentProductItemInfo[0];
                         string currentName = currentProductItemInfo[1];
@@ -129,20 +144,12 @@ namespace Capstone
                         string currentType = currentProductItemInfo[3];
 
                         ProductItem currentItem = new ProductItem(currentName, currentPrice, currentType);
-
-
                         ItemInventory.Add(currentId, currentItem);
-
-
                     }
                 }
-
-
-
             }
             catch (Exception theseHands)
             {
-
                 Console.WriteLine(theseHands.Message);
             }
 
