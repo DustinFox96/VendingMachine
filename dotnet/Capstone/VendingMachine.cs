@@ -13,7 +13,7 @@ namespace Capstone
 
 
         //Method
-        public void FeedMoney(decimal moneyPutIn)
+        public bool FeedMoney(decimal moneyPutIn)
         {
             // If the user has somehow entered less than one cent,
             // chastise them for attempting to pull a fast one on us.
@@ -21,19 +21,20 @@ namespace Capstone
             {
                 Console.WriteLine("Nice try pal");
                 // Console.ReadKey();
-                return;
+                return false;
             }
             // We only accept valid tender
             if (moneyPutIn == 1.00m || moneyPutIn == 2.00m || moneyPutIn == 5.00m || moneyPutIn == 10.00m)
             {
                 CurrentBalance += moneyPutIn;
                 AddLog("Feed Money", moneyPutIn);
+                return true;
             }
             else
             {
                 Console.Write("Go take your Monopoly money elsewhere! (We only accept 1s, 2s, 5s, and 10 bills)");
-                Console.ReadKey();
-                return;
+                //Console.ReadKey();
+                return false;
             }
         }
 
@@ -108,10 +109,14 @@ namespace Capstone
                 return message;
             }
 
+            //adding a log of what item was purchased here
             AddLog(item);
             CurrentBalance -= item.ProductPrice;
+
+            //substracting the current stock of item by 1
             item.ProductStock--;
-            Console.WriteLine($"\nThat {item.Name} just ran you {item.ProductPrice} and now you have {CurrentBalance} current balance remaining");
+
+            Console.WriteLine($"That {item.Name} just ran you {item.ProductPrice} and now you have {CurrentBalance} current balance remaining");
             Console.WriteLine(item.MakeSound());
 
             //this adds +1 to our sales report for this item
@@ -126,7 +131,10 @@ namespace Capstone
         public void AddLog(string activity, decimal usersMoney)
         {
             string currentPath = Directory.GetCurrentDirectory();
+
             //combines our current path to the targetfile we will be writing on.
+            //Path.combine should work on other systems other then Windows
+            //if we did not use Path.combine, we would just have the string "/log.txt"
             string targetFile = Path.Combine(currentPath, "log.txt");
             try
             {
@@ -195,8 +203,6 @@ namespace Capstone
             {
                 Console.WriteLine(theseHands.Message);
             }
-
-
         }
 
         //Method

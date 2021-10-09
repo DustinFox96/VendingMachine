@@ -11,6 +11,8 @@ namespace Capstone.Menus
         public override List<string> MenuOptions { get; set; } = new List<string>()
         { "Display Vending Machine Items", "Purchase", "Exit"};
 
+        //Method
+        //This is displaying and listing our main menus options
         public override void Display()
         {
             // Loop through the menu, writing each option to the console next to its numbered 'place' in the menu
@@ -36,9 +38,12 @@ namespace Capstone.Menus
             }
 
             Console.Clear();
+            //Invoke the navigate method on the option provoided by the user
             Navigate(userSelection);
         }
 
+        //Method
+        //defines what each option does
         public override void Navigate(int userSelection)
         {
             if (userSelection == 1)
@@ -50,12 +55,16 @@ namespace Capstone.Menus
             }
             else if (userSelection == 2)
             {
+                //call the display method of our first child menus
                 ChildMenus[0].Display();
             }
             else if (userSelection == 3)
             {
+                //quits the program.. not quite sure what this does.. ask mike
                 Environment.Exit(0);
             }
+            //This displays our secert sales report menu and let's us know how much has been sold per item and what our total
+            //revenue is.
             else if (userSelection == 12)
             {
                 decimal totalSum = 0;
@@ -71,6 +80,9 @@ namespace Capstone.Menus
             }
             else
             {
+                //kicks us back to the main menu is our choices don't match was provoided
+                Console.WriteLine($"{userSelection} is not a option");
+                Console.WriteLine();
                 Display();
             }
 

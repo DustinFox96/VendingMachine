@@ -14,11 +14,11 @@ namespace Capstone
 
         //Method
         //child class will be expected to insert their own menuOption display here
-        public virtual void Display() { }
+        public abstract void Display();
 
         //Method
         //child class will be expected to record users input
-        public virtual void Navigate(int selectedOption) { }
+        public abstract void Navigate(int selectedOption);
 
         //CTOR
         public NewMenu(string name, VendingMachine currentVendingMachine)
@@ -27,16 +27,7 @@ namespace Capstone
             
             CurrentVendingMachine = currentVendingMachine;
         }
-
-        //CTOR
-        //This is a overloaded CTOR
-        public NewMenu(string name, List<string> menuOptions, NewMenu parentMenu, List<NewMenu> childMenus)
-        {
-            Name = name;
-            MenuOptions = menuOptions;
-            ParentMenu = parentMenu;
-            ChildMenus = childMenus;
-        }
+        
     }
     //DANGER ZONE
 }

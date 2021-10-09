@@ -10,6 +10,7 @@ namespace Capstone.Menus
         { "Feed Money","Select Product", "Finish Transaction" };
 
         //Method
+        //defines what each option does
         public override void Navigate(int userSelection)
         {
             //Feed Money
@@ -18,14 +19,16 @@ namespace Capstone.Menus
                 Console.WriteLine("Please insert dollar bill yo");
                 try
                 {
-                decimal enteredMoney = decimal.Parse(Console.ReadLine());
-                CurrentVendingMachine.FeedMoney(enteredMoney);
-                Console.WriteLine("Press the any key to proceed back to the purchase menu");
+                    decimal enteredMoney = decimal.Parse(Console.ReadLine());
+                    CurrentVendingMachine.FeedMoney(enteredMoney);
+                    Console.WriteLine("Press the any key to proceed back to the purchase menu");
+                    Console.ReadKey();
                 }
                 catch (Exception)
                 {
-                    
+
                     Console.WriteLine("Pretty sure that is not money");
+                    Console.WriteLine("Press the any key to proceed back to the purchase menu");
                     Console.ReadKey();
                 }
 
@@ -34,7 +37,7 @@ namespace Capstone.Menus
 
             }
 
-            // Select Product
+            //Select Product
             else if (userSelection == 2)
             {
                 foreach (KeyValuePair<string, ProductItem> item in CurrentVendingMachine.ItemInventory)
@@ -83,6 +86,7 @@ namespace Capstone.Menus
             Console.WriteLine($"Current balance: ${CurrentVendingMachine.CurrentBalance}");
             for (int i = 0; i < MenuOptions.Count; i++)
             {
+                //We are doing I + 1 here becasue we don't want our menu options to start at zero
                 Console.WriteLine($"({i + 1}) {MenuOptions[i]}");
             }
             Console.WriteLine("Please select an option (1-3)");

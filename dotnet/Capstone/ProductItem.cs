@@ -11,6 +11,7 @@ namespace Capstone
         public decimal ProductPrice { get; set; }
         //Making the default stock of 5, that way when the app is closed and open, it's always given the stock of 5.
         public int ProductStock { get; set; } = 5;
+        //Sales report later records the number of times an item was purchased while the program was running
         public int ItemSalesReport { get; set; } = 0;
 
         //Method
