@@ -11,6 +11,7 @@ namespace Capstone
         public decimal ProductPrice { get; set; }
         //Making the default stock of 5, that way when the app is closed and open, it's always given the stock of 5.
         public int ProductStock { get; set; } = 5;
+        public int ItemSalesReport { get; set; } = 0;
 
         //Method
         //The sound that should be displayed to the console depending what the product type is

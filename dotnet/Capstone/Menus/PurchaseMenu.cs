@@ -16,9 +16,18 @@ namespace Capstone.Menus
             if (userSelection == 1)
             {
                 Console.WriteLine("Please insert dollar bill yo");
+                try
+                {
                 decimal enteredMoney = decimal.Parse(Console.ReadLine());
                 CurrentVendingMachine.FeedMoney(enteredMoney);
                 Console.WriteLine("Press the any key to proceed back to the purchase menu");
+                }
+                catch (Exception)
+                {
+                    
+                    Console.WriteLine("Pretty sure that is not money");
+                    Console.ReadKey();
+                }
 
                 Console.Clear();
                 Display();

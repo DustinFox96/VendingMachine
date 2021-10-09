@@ -56,6 +56,19 @@ namespace Capstone.Menus
             {
                 Environment.Exit(0);
             }
+            else if (userSelection == 12)
+            {
+                decimal totalSum = 0;
+                Console.WriteLine($"SALES REPORT FOR {DateTime.Now}");
+                Console.WriteLine();
+                foreach (KeyValuePair<string, ProductItem> item in CurrentVendingMachine.ItemInventory)
+                {
+                    Console.WriteLine($"{item.Value.Name} {item.Value.ItemSalesReport}");
+                    totalSum += (item.Value.ItemSalesReport * item.Value.ProductPrice);
+                }
+                Console.WriteLine();
+                Console.WriteLine($"Tech Elevator is now ${totalSum} richer.");
+            }
             else
             {
                 Display();

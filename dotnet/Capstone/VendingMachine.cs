@@ -32,7 +32,7 @@ namespace Capstone
             else
             {
                 Console.Write("Go take your Monopoly money elsewhere! (We only accept 1s, 2s, 5s, and 10 bills)");
-                //Console.ReadKey();
+                Console.ReadKey();
                 return;
             }
         }
@@ -48,6 +48,8 @@ namespace Capstone
             {
                 {"Quarters", 0 }, {"Dimes", 0 }, {"Nickels", 0 }, {"Pennies", 0 }
             };
+
+            decimal change = CurrentBalance;
 
             while (CurrentBalance >= .25m)
             {
@@ -69,8 +71,7 @@ namespace Capstone
                 CurrentBalance -= .01m;
                 changeDictionary["Penny"]++;
             }
-            decimal change = CurrentBalance;
-            CurrentBalance = 0;
+
             AddLog("GIVE CHANGE", change);
             return changeDictionary;
         }
@@ -79,21 +80,26 @@ namespace Capstone
         //Checks to make sure item exist, is in stock, and if current balance meets price. if so, proceed with the transaction.
         public string PurchaseItem(string ID)
         {
+
             if (!ItemInventory.ContainsKey(ID))
             {
                 string message = "Try picking something we have, open up your eyes";
                 Console.Write(message);
+                //Console.ReadKey();
                 return message;
             }
 
-            if (ItemInventory[ID].ProductStock < 1)
+            //creating a easiser variable to call on when we need to use current items ID
+            ProductItem item = ItemInventory[ID];
+
+            if (item.ProductStock < 1)
             {
                 string message = "Out of Stock";
                 Console.Write(message);
                 return message;
             }
 
-            if (ItemInventory[ID].ProductPrice > CurrentBalance)
+            if (item.ProductPrice > CurrentBalance)
             {
                 string message = "Poor people don't eat";
                 Console.WriteLine(message);
@@ -102,12 +108,16 @@ namespace Capstone
                 return message;
             }
 
-            AddLog(ItemInventory[ID]);
-            CurrentBalance -= ItemInventory[ID].ProductPrice;
-            ItemInventory[ID].ProductStock--;
-            Console.WriteLine($"\nThat {ItemInventory[ID].Name} just ran you {ItemInventory[ID].ProductPrice} and now you have {CurrentBalance} current balance remaining");
-            Console.WriteLine(ItemInventory[ID].MakeSound());
-            return $"Successfully purchased {ItemInventory[ID].Name}";
+            AddLog(item);
+            CurrentBalance -= item.ProductPrice;
+            item.ProductStock--;
+            Console.WriteLine($"\nThat {item.Name} just ran you {item.ProductPrice} and now you have {CurrentBalance} current balance remaining");
+            Console.WriteLine(item.MakeSound());
+
+            //this adds +1 to our sales report for this item
+            item.ItemSalesReport++;
+
+            return $"Successfully purchased {item.Name}";
             
         }
 
@@ -122,7 +132,7 @@ namespace Capstone
             {
                 using (StreamWriter sw = new StreamWriter(targetFile, true))
                 {
-                    sw.WriteLine($"{DateTime.Now} {activity} {usersMoney} {CurrentBalance} ");
+                    sw.WriteLine($"{DateTime.Now} {activity} ${usersMoney} ${CurrentBalance} ");
                 }
             }
             catch (Exception ex)
@@ -144,7 +154,7 @@ namespace Capstone
             {
                 using (StreamWriter sw = new StreamWriter(targetFile, true))
                 {
-                    sw.WriteLine($"{DateTime.Now} {productName.Name} {CurrentBalance} {CurrentBalance - productName.ProductPrice}");
+                    sw.WriteLine($"{DateTime.Now} {productName.Name} ${CurrentBalance} ${CurrentBalance - productName.ProductPrice}");
                 }
             }
             catch (Exception ex)
